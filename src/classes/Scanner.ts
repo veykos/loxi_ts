@@ -6,6 +6,72 @@ import { type Literal, Token } from "./Token";
 export class Scanner {
     source: string;
     tokens: Array<Token> = [];
+    keywords: Map<string, TokenType> = new Map([
+        [
+            "and",
+            TOKENS.And,
+        ],
+        [
+            "class",
+            TOKENS.Class,
+        ],
+        [
+            "else",
+            TOKENS.Else,
+        ],
+        [
+            "false",
+            TOKENS.False,
+        ],
+        [
+            "for",
+            TOKENS.For,
+        ],
+        [
+            "fun",
+            TOKENS.Fun,
+        ],
+        [
+            "if",
+            TOKENS.If,
+        ],
+        [
+            "nil",
+            TOKENS.Nil,
+        ],
+        [
+            "or",
+            TOKENS.Or,
+        ],
+        [
+            "print",
+            TOKENS.Print,
+        ],
+        [
+            "return",
+            TOKENS.Return,
+        ],
+        [
+            "super",
+            TOKENS.Super,
+        ],
+        [
+            "this",
+            TOKENS.This,
+        ],
+        [
+            "true",
+            TOKENS.True,
+        ],
+        [
+            "var",
+            TOKENS.Var,
+        ],
+        [
+            "while",
+            TOKENS.While,
+        ],
+    ]);
 
     private start = 0;
     private current = 0;
@@ -113,6 +179,9 @@ export class Scanner {
                 if (this.isDigit(char)) {
                     this.number();
                     return;
+                } else if (this.isAlpha(char)) {
+                    this.identifier();
+                    return;
                 }
 
                 Lox.error(this.line, `Unexpected character ${char}`);
@@ -191,8 +260,43 @@ export class Scanner {
         this.addToken(TOKENS.Number, Number.parseFloat(finalCharacters));
     }
 
+    private identifier() {
+        while (this.isAlphaNumeric(this.peek())) {
+            this.advance();
+        }
+
+        const text = this.source.substring(this.start, this.current);
+        let type = this.keywords.get(text);
+
+        if (!type) {
+            type = TOKENS.Identifier;
+        }
+
+        this.addToken(type);
+    }
+
     private isDigit(char: string): boolean {
-        return char > "1" || char < "9";
+        const code = this.codeOf(char);
+
+        return code >= this.codeOf("0") && code <= this.codeOf("9");
+    }
+
+    private isAlpha(char: string): boolean {
+        const code = this.codeOf(char);
+
+        return (
+            (code >= this.codeOf("a") && code <= this.codeOf("z")) ||
+            (code >= this.codeOf("A") && code <= this.codeOf("Z")) ||
+            char === "_"
+        );
+    }
+
+    private isAlphaNumeric(char: string): boolean {
+        return this.isDigit(char) || this.isAlpha(char);
+    }
+
+    private codeOf(char: string): number {
+        return char.charCodeAt(0);
     }
 
     private addToken(type: TokenType, literal?: Literal) {
