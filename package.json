@@ -1,0 +1,19 @@
+{
+    "name": "loxi_ts",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "devDependencies": {
+        "@biomejs/biome": "2.3.11",
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    },
+    "scripts": {
+        "dev": "bun --watch ./index.ts",
+        "lint": "bun biome check && bun tsc -p ./tsconfig.json --noEmit",
+        "lint:fix": "bun biome check --write",
+        "start": "bun ./index.ts"
+    }
+}
