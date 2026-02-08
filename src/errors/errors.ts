@@ -1,0 +1,3 @@
+export const COMMAND_LINE_USAGE_ERROR_CODE = 64;
+
+export const DATA_FORMAT_ERROR_CODE = 65;
