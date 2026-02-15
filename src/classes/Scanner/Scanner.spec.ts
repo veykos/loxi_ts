@@ -157,16 +157,58 @@ describe("Scanner", () => {
         ]);
     });
 
+    it("ignores new lines", () => {
+        const toScan = "\n \n \n \n \n \n \n \n \n \n \n \n";
+
+        const scanner = new Scanner(toScan);
+
+        const tokens = scanner.scanTokens();
+        const tokensType = tokens.map(tokenToTokenType);
+
+        expect(tokensType).toEqual([
+            TOKENS.EOF,
+        ]);
+    });
+
+    it("ignores whitespaces", () => {
+        const toScan = "\t \t \t \t \t \t \t \t \t \t \t \t";
+
+        const scanner = new Scanner(toScan);
+
+        const tokens = scanner.scanTokens();
+        const tokensType = tokens.map(tokenToTokenType);
+
+        expect(tokensType).toEqual([
+            TOKENS.EOF,
+        ]);
+    });
+
+    it("scans lexemes after whitespace and new lines", () => {
+        const toScan = "\tvar \n var";
+
+        const scanner = new Scanner(toScan);
+
+        const tokens = scanner.scanTokens();
+        const tokensType = tokens.map(tokenToTokenType);
+
+        expect(tokensType).toEqual([
+            TOKENS.Var,
+            TOKENS.Var,
+            TOKENS.EOF,
+        ]);
+    });
+
     it.each([
         "@",
         "#",
+        "^",
+        "&",
     ])("will error out on unexpected token %s", (data) => {
         const scanner = new Scanner(data);
 
         scanner.scanTokens();
 
         expect(Lox.hadError).toBeTrue();
-        console.log(Lox.error);
     });
 });
 
