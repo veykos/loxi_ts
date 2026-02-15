@@ -1,7 +1,8 @@
-import { TOKENS } from "../constants/scanner.constants";
-import type { TokenType } from "../types/scanner.types";
-import { Lox } from "./Lox";
-import { type Literal, Token } from "./Token";
+import { TOKENS } from "../../constants/scanner.constants";
+import type { TokenType } from "../../types/scanner.types";
+import { Lox } from "../Lox";
+import type { Literal } from "../Token";
+import { Token } from "../Token";
 
 export class Scanner {
     source: string;
@@ -137,7 +138,7 @@ export class Scanner {
                 break;
             case "=":
                 this.addToken(
-                    this.match("=") ? TOKENS.EqualEqual : TOKENS.EqualEqual,
+                    this.match("=") ? TOKENS.EqualEqual : TOKENS.Equal,
                 );
                 break;
             case "<":

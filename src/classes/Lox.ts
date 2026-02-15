@@ -2,7 +2,7 @@ import {
     COMMAND_LINE_USAGE_ERROR_CODE,
     DATA_FORMAT_ERROR_CODE,
 } from "../errors/errors";
-import { Scanner } from "./Scanner";
+import { Scanner } from "./Scanner/Scanner";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: thats what we want
 export class Lox {

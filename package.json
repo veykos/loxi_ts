@@ -14,6 +14,8 @@
         "dev": "bun --watch ./index.ts",
         "lint": "bun biome check && bun tsc -p ./tsconfig.json --noEmit",
         "lint:fix": "bun biome check --write",
-        "start": "bun ./index.ts"
+        "start": "bun ./index.ts",
+        "test": "bun test",
+        "test:dev": "bun test --watch"
     }
 }
